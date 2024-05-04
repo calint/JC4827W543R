@@ -1,13 +1,10 @@
 # under construction
 
-<video width="240" height="320" src="https://github.com/calint/bam/assets/1920811/1e1f7bb0-4d1e-4ce2-937a-10c6ac176b2e"></video>
-
 # JC4827W543R
-a.k.a. cheap-black-display (CBD)
+a.k.a. cheap-black-device (CBD)
 
 ### about the device
-* [community](https://github.com/witnessmenow/ESP32-Cheap-Yellow-Display)
-* [purchased at](https://www.aliexpress.com/item/1005004502250619.html)
+* [purchased at](https://www.aliexpress.com/item/1005006729377800.html)
 * [manufacturer](http://www.jczn1688.com/)
 
 ### intention
@@ -28,6 +25,5 @@ a.k.a. cheap-black-display (CBD)
   - tool-esptoolpy @ 1.40501.0 (4.5.1) 
   - toolchain-xtensa-esp32 @ 8.4.0+2021r2-patch5
 * dependencies:
-  - SPI @ 2.0.0
-  - TFT_eSPI @ 2.5.43
-  - XPT2046_Touchscreen @ 1.4
+  - GFX Library for Arduino @ 1.4.6+sha.7718866
+  - XPT2046_Touchscreen @ 0.0.0+sha.d57f64c
