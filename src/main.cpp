@@ -42,8 +42,8 @@
 #include <XPT2046_Touchscreen.h>
 
 #define GFX_BL 21
-static Arduino_ESP32SPI bus{2 /* DC */, 15 /* CS */, 14 /* SCK */,
-                            13 /* MOSI */, 12 /* MISO */};
+static Arduino_ESP32SPIDMA bus{2 /* DC */, 15 /* CS */, 14 /* SCK */,
+                               13 /* MOSI */, GFX_NOT_DEFINED /* MISO (12) */};
 static Arduino_ILI9341 display{&bus, GFX_NOT_DEFINED /* RST */,
                                display_orientation};
 
@@ -403,6 +403,9 @@ static void render(const int x, const int y) {
         bus.writeBytesDMA(
             reinterpret_cast<uint8_t *>(dma_buf),
             uint32_t(display_width * dma_n_scanlines * sizeof(uint16_t)));
+        // bus.writeBytes(
+        //     reinterpret_cast<uint8_t *>(dma_buf),
+        //     uint32_t(display_width * dma_n_scanlines * sizeof(uint16_t)));
         dma_scanline_count = 0;
         // swap to the other render buffer
         dma_buf = render_buf_ptr = dma_buf_use_first ? dma_buf_1 : dma_buf_2;
@@ -422,5 +425,8 @@ static void render(const int x, const int y) {
     bus.writeBytesDMA(
         reinterpret_cast<uint8_t *>(dma_buf),
         uint32_t(display_width * dma_n_scanlines * sizeof(uint16_t)));
+    // bus.writeBytes(
+    //     reinterpret_cast<uint8_t *>(dma_buf),
+    //     uint32_t(display_width * dma_n_scanlines * sizeof(uint16_t)));
   }
 }
