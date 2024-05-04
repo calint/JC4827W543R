@@ -134,7 +134,7 @@ void setup() {
 
   // initiate display
   if (!display.begin(SPI_FREQUENCY)) {
-    ESP_LOGE("bam", "could not initiate Arduino_GFX");
+    printf("!!! could not initiate Arduino_GFX\n");
     exit(1);
   }
   pinMode(GFX_BL, OUTPUT);
