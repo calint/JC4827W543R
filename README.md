@@ -25,5 +25,5 @@ a.k.a. cheap-black-device (CBD)
   - tool-esptoolpy @ 1.40501.0 (4.5.1) 
   - toolchain-xtensa-esp32 @ 8.4.0+2021r2-patch5
 * dependencies:
-  - https://github.com/calint/Arduino_GFX.git#2024-04-04
-  - https://github.com/PaulStoffregen/XPT2046_Touchscreen.git#v1.4
+  - https://github.com/calint/Arduino_GFX#2024-05-04--13-58
+  - https://github.com/PaulStoffregen/XPT2046_Touchscreen#v1.4
