@@ -4,14 +4,13 @@
 # todo.txt
 * todo list and suggestions
 
-# User_Setup.h
-* manufacturer provided 'TFT_eSPI' settings
-* settings specified in 'platformio.ini' instead of copying the file into 'lib/TFT_eSPI-2.5.43'
-
 # troubleshooting
 device does not show up as '/dev/ttyUSB0' on linux
 * service 'brltty' might be the problem
 * disable it and related services or uninstall it
+
+# arduino_gfx_patch
+* patches for Arduino_GFX 1.4.6 to do asynchronous DMA for various busses
 
 # platformio.ini
 * additional flags
