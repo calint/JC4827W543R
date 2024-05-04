@@ -1,0 +1,2 @@
+writeBytes: 15/18 fps
+writeBytesAsync: 27/31
