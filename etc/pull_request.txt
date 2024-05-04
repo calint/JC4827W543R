@@ -1,4 +1,4 @@
-'Arduino_ESP32SPI' with additional code for 'writeBytesDMA(...)' doubling performance over 'writeBytes(...)' in use case described below.
+'Arduino_ESP32SPIDMA' with additional code for 'writeBytesDMA(...)' doubling performance over 'writeBytes(...)' in the use case described below.
 
 Tested on ESP32-2432S028R
 
@@ -6,9 +6,8 @@ Tested on ESP32-2432S028R
 ...
 #include <Arduino_GFX_Library.h>
 #define GFX_BL 21
-static Arduino_ESP32SPI bus{2 /* DC */, 15 /* CS */, 14 /* SCK */, 13 /* MOSI */, 12 /* MISO */};
+static Arduino_ESP32SPIDMA bus{2 /* DC */, 15 /* CS */, 14 /* SCK */, 13 /* MOSI */, GFX_NOT_DEFINED /* MISO (12) */};
 static Arduino_ILI9341 display{&bus, GFX_NOT_DEFINED /* RST */, display_orientation};
-
 ...
 void setup() {
   ...
