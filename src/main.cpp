@@ -47,6 +47,8 @@
 //                                */};
 static Arduino_ESP32SPI bus{2 /* DC */, 15 /* CS */, 14 /* SCK */,
                             13 /* MOSI */, GFX_NOT_DEFINED /* MISO (12) */};
+// static Arduino_ESP32SPIDMA bus{2 /* DC */, 15 /* CS */, 14 /* SCK */,
+//                             13 /* MOSI */, GFX_NOT_DEFINED /* MISO (12) */};
 static Arduino_ILI9341 display{&bus, GFX_NOT_DEFINED /* RST */,
                                display_orientation};
 
@@ -402,8 +404,8 @@ static void render(const int x, const int y) {
       dma_scanline_count++;
       if (dma_scanline_count == dma_n_scanlines) {
         dma_writes++;
-        dma_busy += bus.isDMABusy() ? 1 : 0;
-        bus.writeBytesDMA(
+        dma_busy += bus.asyncDMAIsBusy() ? 1 : 0;
+        bus.asyncDMAWriteBytes(
             reinterpret_cast<uint8_t *>(dma_buf),
             uint32_t(display_width * dma_n_scanlines * sizeof(uint16_t)));
         // bus.writeBytes(
@@ -424,8 +426,8 @@ static void render(const int x, const int y) {
   constexpr int dma_n_scanlines_trailing = display_height % dma_n_scanlines;
   if (dma_n_scanlines_trailing) {
     dma_writes++;
-    dma_busy += bus.isDMABusy() ? 1 : 0;
-    bus.writeBytesDMA(
+    dma_busy += bus.asyncDMAIsBusy() ? 1 : 0;
+    bus.asyncDMAWriteBytes(
         reinterpret_cast<uint8_t *>(dma_buf),
         uint32_t(display_width * dma_n_scanlines * sizeof(uint16_t)));
     // bus.writeBytes(
