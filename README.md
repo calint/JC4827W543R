@@ -5,7 +5,9 @@ a.k.a. cheap-black-device (CBD)
 
 ### about the device
 * [purchased at](https://www.aliexpress.com/item/1005006729377800.html)
-* [manufacturer](http://www.jczn1688.com/)
+* [manufacturer](https://www.guition.com)
+* [documentation](https://github.com/lsdlsd88/JC4827W543)
+* [download](http://pan.jczn1688.com/s/zyojx8)
 
 ### intention
 * developing using arduino framework with visual code and platformio
