@@ -192,12 +192,13 @@ static void main_wave_2() {
 }
 
 static void main_wave_3() {
-  constexpr int count = display_height / (sprite_width * 3 / 2);
-  constexpr int dx = display_width / count;
+  constexpr int count_y = 10;
+  constexpr int count_x = 10;
+  constexpr int dx = display_width / count_x;
   float y = -sprite_height;
-  for (int j = 0; j < count; j++, y -= 24) {
+  for (int j = 0; j < count_y; j++, y -= 24) {
     float x = 0;
-    for (int i = 0; i < count; i++, x += dx) {
+    for (int i = 0; i < count_x; i++, x += dx) {
       ship1 *shp = new (objects.allocate_instance()) ship1{};
       shp->x = x;
       shp->y = y;

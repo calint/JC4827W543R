@@ -118,7 +118,7 @@ void setup() {
   // start the spi for the touch screen and init the library
   hspi.begin(XPT2046_CLK, XPT2046_MISO, XPT2046_MOSI, XPT2046_CS);
   touch_screen.begin(hspi);
-  touch_screen.setRotation(display_orientation);
+  touch_screen.setRotation(display_orientation ? 3 : 0);
 
   // initiate display
   if (!display.begin()) {
@@ -128,7 +128,7 @@ void setup() {
   pinMode(GFX_BL, OUTPUT);
   digitalWrite(GFX_BL, HIGH);
   display.fillScreen(WHITE);
-  // display.setAddrWindow(0, 0, display_width, display_height);
+  display.startWrite();
 
   dma_buf_1 = static_cast<uint16_t *>(
       heap_caps_calloc(1, dma_buf_size_B, MALLOC_CAP_DMA));
