@@ -1,3 +1,4 @@
+[ ] investigate if chip revision is 0 indeed and PSRAM bug is possible
 [ ] game_object: position relative to tile map or screen
 [ ] several sets of tiles cycled for animation
 [ ] o1store: ? inst_deleted->~object() at apply_free()
