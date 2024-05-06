@@ -7,7 +7,7 @@
 #include <cstdint>
 
 // 0: portrait, 1: landscape
-static constexpr uint8_t display_orientation = 0;
+static constexpr uint8_t display_orientation = 1;
 
 // lock dt to 32 ms per frame (~31 fps) for deterministic behavior
 // set 0 to use measured dt

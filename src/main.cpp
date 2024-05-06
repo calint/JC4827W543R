@@ -44,7 +44,7 @@
 static Arduino_ESP32QSPI bus{45 /* cs */, 47 /* sck */, 21 /* d0 */,
                              48 /* d1 */, 40 /* d2 */,  39 /* d3 */};
 static Arduino_NV3041A display{
-    &bus, GFX_NOT_DEFINED /* RST */, display_orientation, true /* IPS */
+    &bus, GFX_NOT_DEFINED /* RST */, display_orientation ? 0 : 1, true /* IPS */
 };
 
 // setup touch screen
@@ -116,7 +116,7 @@ void setup() {
   // start the spi for the touch screen and init the library
   hspi.begin(XPT2046_CLK, XPT2046_MISO, XPT2046_MOSI, XPT2046_CS);
   touch_screen.begin(hspi);
-  touch_screen.setRotation(display_orientation ? 3 : 0);
+  touch_screen.setRotation(display_orientation ? 0 : 3);
 
   // initiate display
   if (!display.begin()) {
@@ -161,6 +161,23 @@ void setup() {
   printf("     free heap mem: %u B\n", ESP.getFreeHeap());
   printf("largest free block: %u B\n", ESP.getMaxAllocHeap());
   printf("----------------------------------------------------------\n");
+
+  // constexpr int size = 8 * 1024 * 1024 - 256 * 1024;
+  // constexpr int size = 8000000;
+  // char *buf = (char *)heap_caps_calloc(1, size, MALLOC_CAP_SPIRAM);
+  // assert(buf);
+  // char *p = buf;
+  // for (int i = 0; i < size; i++) {
+  //   *p = (char)i;
+  //   p++;
+  // }
+  // p = buf;
+  // for (int i = 0; i < size; i++) {
+  //   assert(*p == (char)i);
+  //   *p = (char)i;
+  //   assert(*p == (char)i);
+  //   p++;
+  // }
 
   heap_caps_print_heap_info(MALLOC_CAP_DEFAULT);
 }
