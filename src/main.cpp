@@ -41,16 +41,12 @@
 #include <SPI.h>
 #include <XPT2046_Touchscreen.h>
 
-#define GFX_BL 21
-// static Arduino_ESP32SPIDMA bus{2 /* DC */, 15 /* CS */, 14 /* SCK */,
-//                                13 /* MOSI */, GFX_NOT_DEFINED /* MISO (12)
-//                                */};
-static Arduino_ESP32SPI bus{2 /* DC */, 15 /* CS */, 14 /* SCK */,
-                            13 /* MOSI */, GFX_NOT_DEFINED /* MISO (12) */};
-// static Arduino_ESP32SPIDMA bus{2 /* DC */, 15 /* CS */, 14 /* SCK */,
-//                             13 /* MOSI */, GFX_NOT_DEFINED /* MISO (12) */};
-static Arduino_ILI9341 display{&bus, GFX_NOT_DEFINED /* RST */,
-                               display_orientation};
+#define GFX_BL 1
+static Arduino_ESP32QSPI bus{45 /* cs */, 47 /* sck */, 21 /* d0 */,
+                             48 /* d1 */, 40 /* d2 */,  39 /* d3 */};
+static Arduino_NV3041A display{
+    &bus, GFX_NOT_DEFINED /* RST */, display_orientation, true /* IPS */
+};
 
 // setup touch screen
 // https://github.com/witnessmenow/ESP32-Cheap-Yellow-Display/blob/main/Examples/Basics/2-TouchTest/2-TouchTest.ino
@@ -81,17 +77,12 @@ static int dma_busy = 0;
 static int dma_writes = 0;
 
 void setup() {
-  // setup rgb led pins
-  pinMode(CYD_LED_RED, OUTPUT);
-  pinMode(CYD_LED_GREEN, OUTPUT);
-  pinMode(CYD_LED_BLUE, OUTPUT);
-
-  // set rgb led to blue
-  digitalWrite(CYD_LED_RED, HIGH);
-  digitalWrite(CYD_LED_GREEN, HIGH);
-  digitalWrite(CYD_LED_BLUE, LOW);
-
   Serial.begin(115200);
+  sleep(1);
+
+  printf("\n\n");
+
+  heap_caps_print_heap_info(MALLOC_CAP_DEFAULT);
 
   printf("\n\n");
   printf("------------------- platform -----------------------------\n");
@@ -124,28 +115,20 @@ void setup() {
   printf("           sprites: %zu B\n", sizeof(sprites));
   printf("           objects: %zu B\n", sizeof(objects));
 
-  // set rgb led to yellow
-  digitalWrite(CYD_LED_RED, LOW);
-  digitalWrite(CYD_LED_GREEN, LOW);
-  digitalWrite(CYD_LED_BLUE, HIGH);
-
-  // setup ldr pin
-  pinMode(CYD_LDR, INPUT);
-
   // start the spi for the touch screen and init the library
   hspi.begin(XPT2046_CLK, XPT2046_MISO, XPT2046_MOSI, XPT2046_CS);
   touch_screen.begin(hspi);
   touch_screen.setRotation(display_orientation);
 
   // initiate display
-  if (!display.begin(SPI_FREQUENCY)) {
+  if (!display.begin()) {
     printf("!!! could not initiate Arduino_GFX\n");
     exit(1);
   }
   pinMode(GFX_BL, OUTPUT);
   digitalWrite(GFX_BL, HIGH);
-  display.setAddrWindow(0, 0, display_width, display_height);
-  display.startWrite();
+  display.fillScreen(WHITE);
+  // display.setAddrWindow(0, 0, display_width, display_height);
 
   dma_buf_1 = static_cast<uint16_t *>(
       heap_caps_calloc(1, dma_buf_size_B, MALLOC_CAP_DMA));
@@ -156,8 +139,8 @@ void setup() {
     exit(1);
   }
 
-  collision_map = static_cast<sprite_ix *>(
-      calloc(display_width * display_height, sizeof(sprite_ix)));
+  collision_map = static_cast<sprite_ix *>(heap_caps_calloc(
+      display_width * display_height, sizeof(sprite_ix), MALLOC_CAP_INTERNAL));
   if (!collision_map) {
     printf("!!! could not allocate collision map\n");
     exit(1);
@@ -170,11 +153,6 @@ void setup() {
   engine_setup();
 
   main_setup();
-
-  // set rgb led to green
-  digitalWrite(CYD_LED_RED, HIGH);
-  digitalWrite(CYD_LED_GREEN, LOW);
-  digitalWrite(CYD_LED_BLUE, HIGH);
 
   printf("------------------- on heap ------------------------------\n");
   printf("   DMA buf 1 and 2: %d B\n", 2 * dma_buf_size_B);
@@ -192,13 +170,14 @@ void setup() {
 void loop() {
   if (clk.on_frame(clk::time(millis()))) {
     // note. not in 'engine_loop()' due to dependency on 'millis()'
-    printf("t=%06lu  fps=%02d  dma=%03d  ldr=%03u  objs=%03d  sprs=%03d\n",
-           clk.ms, clk.fps, dma_busy * 100 / dma_writes, analogRead(CYD_LDR),
-           objects.allocated_list_len(), sprites.allocated_list_len());
+    printf("t=%06lu  fps=%02d  dma=%03d  objs=%03d  sprs=%03d\n", clk.ms,
+           clk.fps, dma_busy * 100 / dma_writes, objects.allocated_list_len(),
+           sprites.allocated_list_len());
   }
 
   if (touch_screen.tirqTouched() && touch_screen.touched()) {
     const TS_Point pt = touch_screen.getPoint();
+    // ESP_LOGI("b", "x=%d  y=%d  z=%d", pt.x, pt.y, pt.z);
     main_on_touch(pt.x, pt.y, pt.z);
   }
 

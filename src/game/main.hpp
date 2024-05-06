@@ -192,7 +192,7 @@ static void main_wave_2() {
 }
 
 static void main_wave_3() {
-  constexpr int count = display_width / (sprite_width * 3 / 2);
+  constexpr int count = display_height / (sprite_width * 3 / 2);
   constexpr int dx = display_width / count;
   float y = -sprite_height;
   for (int j = 0; j < count; j++, y -= 24) {

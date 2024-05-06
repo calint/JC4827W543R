@@ -56,8 +56,8 @@ static constexpr int tile_height = 16;
 // using tile_ix = uint16_t;
 
 // tile map dimension
-static constexpr int tile_map_width = 15;
-static constexpr int tile_map_height = 320;
+static constexpr int tile_map_width = 30;
+static constexpr int tile_map_height = 272;
 // defined in 'resources/tile_map.hpp'
 
 // type used to index a 'sprite'
