@@ -1,11 +1,10 @@
 //
-// intended for: ESP32-2432S028R
-//    ESP32 Arduino LVGL WIFI & Bluetooth Development Board 2.8"
-//    240 * 320 Smart Display Screen 2.8 inch LCD TFT Module With Touch WROOM
+// intended for: JC4827W543R
+//    Guition ESP32-S3 8M PSRAM 4M FLASH with WIFI and Bluetooth
+//    4.3-inch IPS 480*272 LCD display
 //
 //          from: http://www.jczn1688.com/
-//  purchased at: https://www.aliexpress.com/item/1005004502250619.html
-//     resources: https://github.com/witnessmenow/ESP32-Cheap-Yellow-Display
+//  purchased at: https://www.aliexpress.com/item/1005006729377800.html
 //
 
 // note. design decision of 'hpp' source files
@@ -49,14 +48,13 @@ static Arduino_NV3041A display{
 };
 
 // setup touch screen
-// https://github.com/witnessmenow/ESP32-Cheap-Yellow-Display/blob/main/Examples/Basics/2-TouchTest/2-TouchTest.ino
 static SPIClass hspi{HSPI}; // note. VSPI is used by the display
 static XPT2046_Touchscreen touch_screen{XPT2046_CS, XPT2046_IRQ};
 
 // number of scanlines to render before DMA transfer
 static constexpr int dma_n_scanlines = 8;
 // note. performance on device:
-//  1: 23 fps, 2: 27 fps, 4: 29 fps, 8: 31 fps, 16: 31 fps, 32: 32 fps
+//  1: 25 fps, 2: 28 fps, 4: 29 fps, 8: 31 fps, 16: 31 fps, 32: 31 fps
 
 // alternating buffers for rendering scanlines while DMA is active
 // allocated in 'setup()'
