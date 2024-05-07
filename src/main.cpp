@@ -1,10 +1,10 @@
 //
-// intended for: JC4827W543R
-//    Guition ESP32-S3 8M PSRAM 4M FLASH with WIFI and Bluetooth
-//    4.3-inch IPS 480*272 LCD display
+//  JC4827W543R
+//  Guition ESP32-S3, 8M PSRAM, 4M FLASH, WIFI, Bluetooth
+//  4.3" IPS 480*272 LCD display
 //
-//          from: http://www.jczn1688.com/
 //  purchased at: https://www.aliexpress.com/item/1005006729377800.html
+//          docs: http://pan.jczn1688.com/s/zyojx8
 //
 
 // note. design decision of 'hpp' source files
@@ -52,9 +52,8 @@
 #include <SPI.h>
 #include <XPT2046_Touchscreen.h>
 
-#define GFX_BL 1
-static Arduino_ESP32QSPI bus{45 /* cs */, 47 /* sck */, 21 /* d0 */,
-                             48 /* d1 */, 40 /* d2 */,  39 /* d3 */};
+// setup display
+static Arduino_ESP32QSPI bus{TFT_CS, TFT_CLK, TFT_D0, TFT_D1, TFT_D2, TFT_D3};
 static Arduino_NV3041A display{
     &bus, GFX_NOT_DEFINED /* RST */, display_orientation ? 0 : 1, true /* IPS */
 };
@@ -88,7 +87,7 @@ static int dma_writes = 0;
 
 void setup() {
   Serial.begin(115200);
-  sleep(1);
+  sleep(1); // arbitrary wait for serial to connects
 
   printf("\n\n");
 
@@ -129,15 +128,15 @@ void setup() {
   // start the spi for the touch screen and init the library
   hspi.begin(XPT2046_CLK, XPT2046_MISO, XPT2046_MOSI, XPT2046_CS);
   touch_screen.begin(hspi);
-  touch_screen.setRotation(display_orientation ? 0 : 3);
+  touch_screen.setRotation(display_orientation ? 0 : 1);
 
   // initiate display
   if (!display.begin()) {
     printf("!!! could not initiate Arduino_GFX\n");
     exit(1);
   }
-  pinMode(GFX_BL, OUTPUT);
-  digitalWrite(GFX_BL, HIGH);
+  pinMode(TFT_BL, OUTPUT);
+  digitalWrite(TFT_BL, HIGH);
   display.fillScreen(WHITE);
   display.startWrite();
 
