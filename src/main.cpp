@@ -32,6 +32,9 @@
 
 #include <Arduino.h>
 
+// esp32 related
+#include "hal/efuse_hal.h"
+
 // first game defines
 #include "game/defs.hpp"
 
@@ -94,7 +97,8 @@ void setup() {
   printf("\n\n");
   printf("------------------- platform -----------------------------\n");
   printf("        chip model: %s\n", ESP.getChipModel());
-  printf("          revision: %u\n", ESP.getChipRevision());
+  printf("          revision: %u.%u\n", efuse_hal_get_major_chip_version(),
+         efuse_hal_get_minor_chip_version());
   printf("             cores: %u\n", ESP.getChipCores());
   printf("              freq: %u MHz\n", ESP.getCpuFreqMHz());
   printf("            screen: %u x %u px\n", display_width, display_height);

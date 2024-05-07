@@ -75,8 +75,13 @@ public:
     free_ptr_++;
     *alloc_ptr_ = inst;
     inst->alloc_ptr = alloc_ptr_;
-    asm("memw"); // !! flushes write in pipeline
-                 // !! see esp32-s3 rev 0 hardware bug?
+    asm("memw"); // !! flushes write in pipeline. without this it crashes with
+                 // !! null pointer. a print statement between these 2 lines
+                 // !! also works.
+                 // https://www.espressif.com/sites/default/files/documentation/esp32_errata_en.pdf
+                 // !! section 3.2
+                 // !! When the CPU accesses external SRAM through cache, under
+                 // !! certain conditions read and write errors occur.
     alloc_ptr_++;
     return inst;
   }
