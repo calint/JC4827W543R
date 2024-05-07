@@ -1,10 +1,8 @@
 #pragma once
-// platform constants used by main, engine and game
+// platform dependent constants used by main, engine and game
 
 // reviewed: 2023-12-11
 // reviewed: 2024-05-01
-
-#include "game/defs.hpp"
 
 // display dimensions depending on orientation
 static constexpr int display_width =

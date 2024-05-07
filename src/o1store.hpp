@@ -30,14 +30,19 @@ class o1store {
 public:
   o1store() {
     if (InstanceSizeInBytes) {
-      all_ = static_cast<Type *>(calloc(Size, InstanceSizeInBytes));
+      all_ = static_cast<Type *>(
+          heap_caps_calloc(Size, InstanceSizeInBytes, MALLOC_CAP_INTERNAL));
+
     } else {
-      all_ = static_cast<Type *>(calloc(Size, sizeof(Type)));
+      all_ = static_cast<Type *>(
+          heap_caps_calloc(Size, sizeof(Type), MALLOC_CAP_INTERNAL));
     }
-    free_ptr_ = free_bgn_ = static_cast<Type **>(calloc(Size, sizeof(Type *)));
-    alloc_ptr_ = alloc_bgn_ =
-        static_cast<Type **>(calloc(Size, sizeof(Type *)));
-    del_ptr_ = del_bgn_ = static_cast<Type **>(calloc(Size, sizeof(Type *)));
+    free_ptr_ = free_bgn_ = static_cast<Type **>(
+        heap_caps_calloc(Size, sizeof(Type *), MALLOC_CAP_INTERNAL));
+    alloc_ptr_ = alloc_bgn_ = static_cast<Type **>(
+        heap_caps_calloc(Size, sizeof(Type *), MALLOC_CAP_INTERNAL));
+    del_ptr_ = del_bgn_ = static_cast<Type **>(
+        heap_caps_calloc(Size, sizeof(Type *), MALLOC_CAP_INTERNAL));
 
     if (!all_ || !free_bgn_ || !alloc_bgn_ || !del_bgn_) {
       printf("!!! o1store %d: could not allocate arrays\n", StoreId);
@@ -70,6 +75,8 @@ public:
     free_ptr_++;
     *alloc_ptr_ = inst;
     inst->alloc_ptr = alloc_ptr_;
+    asm("memw"); // !! flushes write in pipeline
+                 // !! see esp32-s3 rev 0 hardware bug?
     alloc_ptr_++;
     return inst;
   }

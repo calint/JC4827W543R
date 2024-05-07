@@ -32,7 +32,16 @@
 
 #include <Arduino.h>
 
-// main entry file to user code
+// first game defines
+#include "game/defs.hpp"
+
+// then platform constants
+#include "platform.hpp"
+
+// then the engine
+#include "engine.hpp"
+
+// then the main entry file to user code
 #include "game/main.hpp"
 
 // platform specific definitions and objects
@@ -162,7 +171,7 @@ void setup() {
   printf("largest free block: %u B\n", ESP.getMaxAllocHeap());
   printf("----------------------------------------------------------\n");
 
-  // constexpr int size = 8 * 1024 * 1024 - 256 * 1024;
+  // // constexpr int size = 8 * 1024 * 1024 - 256 * 1024;
   // constexpr int size = 8000000;
   // char *buf = (char *)heap_caps_calloc(1, size, MALLOC_CAP_SPIRAM);
   // assert(buf);
