@@ -164,6 +164,9 @@ public:
     } else {
       ms = time_ms;
       dt = 0.001f * float(ms - prv_ms_);
+      if (dt < 0) {
+        dt = 0; // the rollover
+      }
       prv_ms_ = ms;
     }
     frames_rendered_since_last_update_++;
