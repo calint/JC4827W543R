@@ -197,7 +197,7 @@ void setup() {
 void loop() {
   if (clk.on_frame(clk::time(millis()))) {
     // note. not in 'engine_loop()' due to dependency on 'millis()'
-    printf("t=%06lu  fps=%02d  dma=%03d  objs=%03d  sprs=%03d\n", clk.ms,
+    printf("t=%06u  fps=%02d  dma=%03d  objs=%03d  sprs=%03d\n", clk.ms,
            clk.fps, dma_busy * 100 / dma_writes, objects.allocated_list_len(),
            sprites.allocated_list_len());
   }

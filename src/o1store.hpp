@@ -79,7 +79,8 @@ public:
     // asm("nop"); // !! note.
     // !! for build in platformio: (not an issue in arduino ide)
     // !! crashes with null pointer exception if not present in -O3, -O2, -O1
-    // !! a print statement between these 2 lines also works.
+    // !! printf("hello\n");
+    // !! a print statement between these 2 lines also removes bug
     // !!
     // https://www.espressif.com/sites/default/files/documentation/esp32_errata_en.pdf
     // !! section 3.2 ?
