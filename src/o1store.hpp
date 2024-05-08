@@ -62,9 +62,13 @@ public:
 
   // allocates an instance
   // returns nullptr if instance could not be allocated
-  // !! note. __attribute__ fixes the bug mentioned below
+  // !! note
+  // !! __attribute__((optimize("O3"))) fixes the bug mentioned below
   // !! possibly UB code somewhere else?
-  __attribute__((optimize("O3"))) auto allocate_instance() -> Type * {
+  // !! inline __attribute__((always_inline)) __attribute__((optimize("O3")))
+  // !! triggers bug
+  // !! __attribute__((noinline)) fixes bug
+  __attribute__((noinline)) auto allocate_instance() -> Type * {
     if (free_ptr_ >= free_end_) {
       return nullptr;
     }
@@ -72,8 +76,8 @@ public:
     free_ptr_++;
     *alloc_ptr_ = inst;
     inst->alloc_ptr = alloc_ptr_;
-    // asm("nop"); // !! note for build in platformio: (not an issue in arduino
-    //  ide)
+    // asm("nop"); // !! note.
+    // !! for build in platformio: (not an issue in arduino ide)
     // !! crashes with null pointer exception if not present in -O3, -O2, -O1
     // !! a print statement between these 2 lines also works.
     // !!
