@@ -30,19 +30,14 @@ class o1store {
 public:
   o1store() {
     if (InstanceSizeInBytes) {
-      all_ = static_cast<Type *>(
-          heap_caps_calloc(Size, InstanceSizeInBytes, MALLOC_CAP_INTERNAL));
-
+      all_ = static_cast<Type *>(calloc(Size, InstanceSizeInBytes));
     } else {
-      all_ = static_cast<Type *>(
-          heap_caps_calloc(Size, sizeof(Type), MALLOC_CAP_INTERNAL));
+      all_ = static_cast<Type *>(calloc(Size, sizeof(Type)));
     }
-    free_ptr_ = free_bgn_ = static_cast<Type **>(
-        heap_caps_calloc(Size, sizeof(Type *), MALLOC_CAP_INTERNAL));
-    alloc_ptr_ = alloc_bgn_ = static_cast<Type **>(
-        heap_caps_calloc(Size, sizeof(Type *), MALLOC_CAP_INTERNAL));
-    del_ptr_ = del_bgn_ = static_cast<Type **>(
-        heap_caps_calloc(Size, sizeof(Type *), MALLOC_CAP_INTERNAL));
+    free_ptr_ = free_bgn_ = static_cast<Type **>(calloc(Size, sizeof(Type *)));
+    alloc_ptr_ = alloc_bgn_ =
+        static_cast<Type **>(calloc(Size, sizeof(Type *)));
+    del_ptr_ = del_bgn_ = static_cast<Type **>(calloc(Size, sizeof(Type *)));
 
     if (!all_ || !free_bgn_ || !alloc_bgn_ || !del_bgn_) {
       printf("!!! o1store %d: could not allocate arrays\n", StoreId);
@@ -76,13 +71,15 @@ public:
     *alloc_ptr_ = inst;
     inst->alloc_ptr = alloc_ptr_;
     alloc_ptr_++;
-    asm("nop");  // !! crashes with null pointer exception if not present
-                 // !! in -O3, -O2, -O1. a print statement between these 2 lines also works.
-                 // https://www.espressif.com/sites/default/files/documentation/esp32_errata_en.pdf
-                 // !! section 3.2 ?
-                 // !! When the CPU accesses external SRAM through cache, under
-                 // !! certain conditions read and write errors occur.
-                 // !! possibly related issue https://github.com/espressif/esp-idf/issues/2892
+    asm("nop"); // !! crashes with null pointer exception if not present
+                // !! in -O3, -O2, -O1. a print statement between these 2 lines
+                // also works.
+                // https://www.espressif.com/sites/default/files/documentation/esp32_errata_en.pdf
+                // !! section 3.2 ?
+                // !! When the CPU accesses external SRAM through cache, under
+                // !! certain conditions read and write errors occur.
+                // !! possibly related issue
+                // https://github.com/espressif/esp-idf/issues/2892
     return inst;
   }
 
