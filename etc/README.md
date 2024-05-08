@@ -1,16 +1,16 @@
+# troubleshooting
+device does not show up as '/dev/ttyUSB0' on linux
+* service 'brltty' might be the problem
+* disable it and related services or uninstall it
+
 # arduino_gfx_patch
-* patches for Arduino_GFX 1.4.6 to do asynchronous DMA for various busses
+* patches for Arduino_GFX 1.4.6 to do asynchronous DMA for various buses
 
 # clipboard.txt
 * various command lines and notes
 
 # todo.txt
 * todo list and suggestions
-
-# troubleshooting
-device does not show up as '/dev/ttyUSB0' on linux
-* service 'brltty' might be the problem
-* disable it and related services or uninstall it
 
 # platformio.ini
 * additional flags
