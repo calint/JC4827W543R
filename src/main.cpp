@@ -126,7 +126,7 @@ void setup() {
   printf("           objects: %zu B\n", sizeof(objects));
 
   // start the spi for the touch screen and init the library
-  hspi.begin(XPT2046_CLK, XPT2046_MISO, XPT2046_MOSI, XPT2046_CS);
+  hspi.begin(XPT2046_SCK, XPT2046_MISO, XPT2046_MOSI, XPT2046_CS);
   touch_screen.begin(hspi);
   touch_screen.setRotation(display_orientation ? 0 : 1);
 
