@@ -53,7 +53,7 @@
 #include <XPT2046_Touchscreen.h>
 
 // setup display
-static Arduino_ESP32QSPI bus{TFT_CS, TFT_CLK, TFT_D0, TFT_D1, TFT_D2, TFT_D3};
+static Arduino_ESP32QSPI bus{TFT_CS, TFT_SCK, TFT_D0, TFT_D1, TFT_D2, TFT_D3};
 static Arduino_NV3041A display{
     &bus, GFX_NOT_DEFINED /* RST */, display_orientation ? 0 : 1, true /* IPS */
 };
