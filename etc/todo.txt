@@ -1,4 +1,6 @@
 [ ] investigate if chip revision is 0 indeed and PSRAM bug is possible
+[ ] sprite layers as bit field. layer #1 0b001, #2 0b010, #3 0b100 etc
+    bitwise comparison of layers between sprites at collision detection
 [ ] game_object: position relative to tile map or screen
 [ ] several sets of tiles cycled for animation
 [ ] o1store: ? inst_deleted->~object() at apply_free()
