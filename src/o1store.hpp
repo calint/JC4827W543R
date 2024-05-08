@@ -62,7 +62,8 @@ public:
 
   // allocates an instance
   // returns nullptr if instance could not be allocated
-  // note. __attribute__ fixes the bug mentioned below
+  // !! note. __attribute__ fixes the bug mentioned below
+  // !! possibly UB code somewhere else?
   __attribute__((optimize("O3"))) auto allocate_instance() -> Type * {
     if (free_ptr_ >= free_end_) {
       return nullptr;
