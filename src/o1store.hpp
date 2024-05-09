@@ -68,7 +68,8 @@ public:
   // !! inline __attribute__((always_inline)) __attribute__((optimize("O3")))
   // !! triggers bug
   // !! __attribute__((noinline)) fixes bug
-  __attribute__((noinline)) auto allocate_instance() -> Type * {
+  // __attribute__((noinline))
+  auto allocate_instance() -> Type * {
     if (free_ptr_ >= free_end_) {
       return nullptr;
     }
@@ -76,11 +77,11 @@ public:
     free_ptr_++;
     *alloc_ptr_ = inst;
     inst->alloc_ptr = alloc_ptr_;
-    // asm("nop"); // !! note.
-    // !! for build in platformio: (not an issue in arduino ide)
-    // !! crashes with null pointer exception if not present in -O3, -O2, -O1
+    asm("nop"); // !! note.
+    // !! built in platformio: (not an issue in arduino ide)
+    // !! inst->alloc_ptr is set to 0 although it should not be possible in -O3, -O2, -O1
     // !! printf("hello\n");
-    // !! a print statement between these 2 lines also removes bug
+    // !! a print statement between these 2 lines also fixes the bug
     // !!
     // https://www.espressif.com/sites/default/files/documentation/esp32_errata_en.pdf
     // !! section 3.2 ?
