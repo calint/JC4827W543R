@@ -65,8 +65,7 @@ public:
   // !! note
   // !! __attribute__((optimize("O3"))) fixes the bug mentioned below
   // !! possibly UB code somewhere else?
-  // !! inline __attribute__((always_inline)) __attribute__((optimize("O3")))
-  // !! triggers bug
+  // !! inline __attribute__((always_inline)) triggers bug
   // !! __attribute__((noinline)) fixes bug
   // __attribute__((noinline))
   auto allocate_instance() -> Type * {
