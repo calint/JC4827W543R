@@ -22,6 +22,7 @@ next experiment after [ESP32-2432S028R](https://github.com/calint/bam)
 * Visual Code 1.89.0
 * PlatformIO 6.1.15
 * Espressif 32 (6.6.0) > Espressif ESP32 Dev Module
+* esp-idf 4.4 patch 6
 * packages:
   - framework-arduinoespressif32 @ 3.20014.231204 (2.0.14) 
   - tool-esptoolpy @ 1.40501.0 (4.5.1) 

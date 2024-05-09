@@ -64,7 +64,7 @@ static XPT2046_Touchscreen touch_screen{XPT2046_CS, XPT2046_IRQ};
 
 // number of scanlines to render before DMA transfer
 static constexpr int dma_n_scanlines = 8;
-// note. performance on device:
+// note. performance on device: max 60 (32640 B buffer)
 //  1: 26 fps, 2: 32 fps, 4: 35 fps, 8: 37 fps, 16: 38 fps, 32: 39 fps
 
 // alternating buffers for rendering scanlines while DMA is active
