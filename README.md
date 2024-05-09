@@ -1,3 +1,5 @@
+<video width="240" height="320" src="https://github.com/calint/JC4827W543R/assets/1920811/8b5c0ccf-73d2-4392-b81a-12377bdd7c0d"></video>
+
 # JC4827W543R
 a.k.a. cheap-black-device (CBD)
 
