@@ -1,5 +1,3 @@
-# under construction
-
 # JC4827W543R
 a.k.a. cheap-black-device (CBD)
 
@@ -16,7 +14,7 @@ a.k.a. cheap-black-device (CBD)
   - smooth scrolling tile map
   - sprites in layers with pixel precision on-screen collision detection
   - intuitive definition of game objects and logic
-  - decent performance, ~30 frames per second on the device
+  - decent performance, ~35 frames per second on the device
 
 ### development environment
 * Visual Code 1.89.0
