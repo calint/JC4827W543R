@@ -62,12 +62,12 @@ public:
 
   // allocates an instance
   // returns nullptr if instance could not be allocated
-  // !! note
+  // !! note.
+  // !! when built in platformio 6.1.15
+  // !! not an issue when built in arduino ide 2.3.1
   // !! __attribute__((optimize("O3"))) fixes the bug mentioned below
-  // !! possibly UB code somewhere else?
-  // !! inline __attribute__((always_inline)) triggers bug
+  // !! __attribute__((always_inline)) triggers bug
   // !! __attribute__((noinline)) fixes bug
-  // __attribute__((noinline))
   auto allocate_instance() -> Type * {
     if (free_ptr_ >= free_end_) {
       return nullptr;
@@ -76,18 +76,11 @@ public:
     free_ptr_++;
     *alloc_ptr_ = inst;
     inst->alloc_ptr = alloc_ptr_;
-    asm("nop"); // !! note.
-    // !! built in platformio: (not an issue in arduino ide)
-    // !! inst->alloc_ptr is set to 0 although it should not be possible in -O3, -O2, -O1
-    // !! printf("hello\n");
-    // !! a print statement between these 2 lines also fixes the bug
-    // !!
-    // https://www.espressif.com/sites/default/files/documentation/esp32_errata_en.pdf
-    // !! section 3.2 ?
-    // !! When the CPU accesses external SRAM through cache, under
-    // !! certain conditions read and write errors occur.
-    // !! possibly related issue
-    //  https://github.com/espressif/esp-idf/issues/2892
+    asm("nop"); // !! note. fixes bug
+    // !! inst->alloc_ptr is set to 0 in -O3 although it should be impossible
+    // !! printf("anything\n");
+    // !! print statement between these 2 lines also fixes the bug
+    // !! possible UB code somewhere else?
     alloc_ptr_++;
     return inst;
   }
