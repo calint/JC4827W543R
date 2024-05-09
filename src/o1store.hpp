@@ -63,9 +63,9 @@ public:
   // allocates an instance
   // returns nullptr if instance could not be allocated
   // !! note.
-  // !! when built in platformio 6.1.15
+  // !! issue when built in platformio 6.1.15
   // !! not an issue when built in arduino ide 2.3.1
-  // !! __attribute__((optimize("O3"))) fixes the bug mentioned below
+  // !! __attribute__((optimize("O3"))) fixes the bug below
   // !! __attribute__((always_inline)) triggers bug
   // !! __attribute__((noinline)) fixes bug
   auto allocate_instance() -> Type * {
@@ -76,8 +76,8 @@ public:
     free_ptr_++;
     *alloc_ptr_ = inst;
     inst->alloc_ptr = alloc_ptr_;
-    asm("nop"); // !! fixes bug. note.
-    // !! inst->alloc_ptr is set to 0 in -O3 although it should be impossible
+    asm("nop"); // !! fixes bug
+    // !! bug sets inst->alloc_ptr to 0 in -O3 although it should be impossible
     // !! print statement between these 2 lines also fixes the bug
     // !! possible UB code somewhere else?
     alloc_ptr_++;
