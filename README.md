@@ -16,7 +16,7 @@ next experiment after [ESP32-2432S028R](https://github.com/calint/bam)
   - smooth scrolling tile map
   - sprites in layers with pixel precision on-screen collision detection
   - intuitive definition of game objects and logic
-  - decent performance, ~40 frames per second on the device
+  - decent performance, ~40+/-5 frames per second on the device
 
 ### development environment
 * Visual Code 1.89.0
