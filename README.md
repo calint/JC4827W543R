@@ -1,6 +1,8 @@
 # JC4827W543R
 a.k.a. cheap-black-device (CBD)
 
+next experiment after [ESP32-2432S028R](https://github.com/calint/bam)
+
 ### about the device
 * [purchased at](https://www.aliexpress.com/item/1005006729377800.html)
 * [manufacturer](https://www.guition.com)
