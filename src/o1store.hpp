@@ -76,9 +76,8 @@ public:
     free_ptr_++;
     *alloc_ptr_ = inst;
     inst->alloc_ptr = alloc_ptr_;
-    asm("nop"); // !! note. fixes bug
+    asm("nop"); // !! fixes bug. note.
     // !! inst->alloc_ptr is set to 0 in -O3 although it should be impossible
-    // !! printf("anything\n");
     // !! print statement between these 2 lines also fixes the bug
     // !! possible UB code somewhere else?
     alloc_ptr_++;
