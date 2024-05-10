@@ -5,7 +5,7 @@
 // template parameters:
 // * 'Type' is object type. 'Type' must contain public field 'Type **alloc_ptr'
 // * Size is number of preallocated objects
-// * StoreId is and id used for debugging
+// * StoreId is used for debugging
 // * InstanceSizeInBytes is custom size of instance to fit largest object in an
 //   object hierarchy or 0 if 'Type' sizeof is used
 //
@@ -77,7 +77,7 @@ public:
     *alloc_ptr_ = inst;
     inst->alloc_ptr = alloc_ptr_;
     asm("nop"); // !! fixes bug
-    // !! bug sets inst->alloc_ptr to 0 in -O3 although it should be impossible
+    // !! bug does not set inst->alloc_ptr in -O3
     // !! print statement between these 2 lines also fixes the bug
     // !! possible UB code somewhere else?
     alloc_ptr_++;
