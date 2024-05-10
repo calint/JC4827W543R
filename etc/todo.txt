@@ -1,4 +1,6 @@
-[ ] investigate if chip revision is 0 indeed and PSRAM bug is possible
+[x] fix time rollover bug
+    => dt would become huge so it is capped to 0.1 s
+[x] investigate if chip revision is 0 indeed and PSRAM bug is possible
 [ ] investigate SPI_MAX_DMA_LEN which is 4092 but more seems to be possible without error
 [ ] sprite layers as bit field. layer #1 0b001, #2 0b010, #3 0b100 etc
     bitwise comparison of layers between sprites at collision detection

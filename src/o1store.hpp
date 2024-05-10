@@ -62,13 +62,6 @@ public:
 
   // allocates an instance
   // returns nullptr if instance could not be allocated
-  // !! note.
-  // !! issue when built in platformio 6.1.15
-  // !! not an issue when built in arduino ide 2.3.1
-  // !! __attribute__((optimize("O3"))) fixes the bug below
-  // !! __attribute__((always_inline)) triggers bug
-  // !! __attribute__((noinline)) fixes bug
-  // !! #pragma GCC optimize("O3") fixes bug
   auto allocate_instance() -> Type * {
     if (free_ptr_ >= free_end_) {
       return nullptr;
@@ -77,14 +70,10 @@ public:
     free_ptr_++;
     *alloc_ptr_ = inst;
     inst->alloc_ptr = alloc_ptr_;
-    asm("nop"); // !! fixes bug
-    // !! bug does not set inst->alloc_ptr in -O3
-    // !! print statement between these 2 lines also fixes the bug
-    // !! possible UB code somewhere else?
+    // note. needs compiler flag -flifetime-dse=1 for inst->alloc_ptr to be written
     alloc_ptr_++;
     return inst;
   }
-  // !! #pragma GCC reset_options
 
   // adds instance to list of instances to be freed with 'apply_free()'
   void free_instance(Type *inst) {
