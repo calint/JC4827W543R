@@ -6,9 +6,9 @@
 
 // display dimensions depending on orientation
 static constexpr int display_width =
-    display_orientation == 1 ? TFT_WIDTH : TFT_HEIGHT;
+    display_orientation == TFT_ORIENTATION ? TFT_WIDTH : TFT_HEIGHT;
 static constexpr int display_height =
-    display_orientation == 1 ? TFT_HEIGHT : TFT_WIDTH;
+    display_orientation == TFT_ORIENTATION ? TFT_HEIGHT : TFT_WIDTH;
 
 // calibration of touch screen
 static constexpr int16_t touch_screen_min_x = TOUCH_SCREEN_MIN_X;
