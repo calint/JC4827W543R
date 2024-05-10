@@ -68,6 +68,7 @@ public:
   // !! __attribute__((optimize("O3"))) fixes the bug below
   // !! __attribute__((always_inline)) triggers bug
   // !! __attribute__((noinline)) fixes bug
+  // !! #pragma GCC optimize("O3") fixes bug
   auto allocate_instance() -> Type * {
     if (free_ptr_ >= free_end_) {
       return nullptr;
@@ -83,6 +84,7 @@ public:
     alloc_ptr_++;
     return inst;
   }
+  // !! #pragma GCC reset_options
 
   // adds instance to list of instances to be freed with 'apply_free()'
   void free_instance(Type *inst) {
