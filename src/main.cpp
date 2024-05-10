@@ -48,24 +48,19 @@
 #include "game/main.hpp"
 
 // platform specific definitions and objects
-// #include <Arduino_GFX_Library.h>
+#include <Arduino_GFX_Library.h>
+#include <SPI.h>
+#include <XPT2046_Touchscreen.h>
 
-// // setup display
-// static Arduino_ESP32QSPI bus{TFT_CS, TFT_SCK, TFT_D0, TFT_D1, TFT_D2,
-// TFT_D3}; static Arduino_NV3041A display{
-//     &bus, GFX_NOT_DEFINED /* RST */, display_orientation ? 0 : 1, true /* IPS
-//     */
-// };
-
-#include <bb_spi_lcd.h>
-static BB_SPI_LCD lcd{};
+// setup display
+static Arduino_ESP32QSPI bus{TFT_CS, TFT_SCK, TFT_D0, TFT_D1, TFT_D2, TFT_D3};
+static Arduino_NV3041A display{
+    &bus, GFX_NOT_DEFINED /* RST */, display_orientation ? 0 : 1, true /* IPS */
+};
 
 // setup touch screen
-// #include <SPI.h>
-// static SPIClass hspi{HSPI}; // note. VSPI is used by the display
-
-// #include <XPT2046_Touchscreen.h>
-// static XPT2046_Touchscreen touch_screen{XPT2046_CS, XPT2046_IRQ};
+static SPIClass hspi{HSPI}; // note. VSPI is used by the display
+static XPT2046_Touchscreen touch_screen{XPT2046_CS, XPT2046_IRQ};
 
 // number of scanlines to render before DMA transfer
 static constexpr int dma_n_scanlines = 8;
@@ -131,26 +126,19 @@ void setup() {
   printf("           objects: %zu B\n", sizeof(objects));
 
   // start the spi for the touch screen and init the library
-  // hspi.begin(XPT2046_SCK, XPT2046_MISO, XPT2046_MOSI, XPT2046_CS);
-  // touch_screen.begin(hspi);
-  // touch_screen.setRotation(display_orientation ? 0 : 1);
+  hspi.begin(XPT2046_SCK, XPT2046_MISO, XPT2046_MOSI, XPT2046_CS);
+  touch_screen.begin(hspi);
+  touch_screen.setRotation(display_orientation ? 0 : 1);
 
-  lcd.begin(DISPLAY_CYD_543);
-  lcd.rtInit(XPT2046_MOSI, XPT2046_MISO, XPT2046_SCK,
-             XPT2046_CS); // initialize touch AFTER initializing the LCD
-  lcd.setRotation(display_orientation ? 0 : 3);
-  lcd.fillScreen(TFT_WHITE);
-  lcd.setAddrWindow(0, 0, display_width, display_height);
-
-  // // initiate display
-  // if (!display.begin()) {
-  //   printf("!!! could not initiate Arduino_GFX\n");
-  //   exit(1);
-  // }
-  // pinMode(TFT_BL, OUTPUT);
-  // digitalWrite(TFT_BL, HIGH);
-  // display.fillScreen(WHITE);
-  // display.startWrite();
+  // initiate display
+  if (!display.begin()) {
+    printf("!!! could not initiate Arduino_GFX\n");
+    exit(1);
+  }
+  pinMode(TFT_BL, OUTPUT);
+  digitalWrite(TFT_BL, HIGH);
+  display.fillScreen(WHITE);
+  display.startWrite();
 
   dma_buf_1 = static_cast<uint16_t *>(
       heap_caps_calloc(1, dma_buf_size_B, MALLOC_CAP_DMA));
@@ -206,7 +194,6 @@ void setup() {
   heap_caps_print_heap_info(MALLOC_CAP_DEFAULT);
 }
 
-TOUCHINFO ti{};
 void loop() {
   if (clk.on_frame(clk::time(millis()))) {
     // note. not in 'engine_loop()' due to dependency on 'millis()'
@@ -215,15 +202,10 @@ void loop() {
            sprites.allocated_list_len());
   }
 
-  // if (touch_screen.tirqTouched() && touch_screen.touched()) {
-  //   const TS_Point pt = touch_screen.getPoint();
-  //   // ESP_LOGI("b", "x=%d  y=%d  z=%d", pt.x, pt.y, pt.z);
-  //   main_on_touch(pt.x, pt.y, pt.z);
-  // }
-
-  if (lcd.rtReadTouch(&ti)) {
-    main_on_touch(ti.x[0] * 4096 / display_width,
-                  ti.y[0] * 4096 / display_height, 1);
+  if (touch_screen.tirqTouched() && touch_screen.touched()) {
+    const TS_Point pt = touch_screen.getPoint();
+    // ESP_LOGI("b", "x=%d  y=%d  z=%d", pt.x, pt.y, pt.z);
+    main_on_touch(pt.x, pt.y, pt.z);
   }
 
   engine_loop();
@@ -428,16 +410,13 @@ static void render(const int x, const int y) {
       dma_scanline_count++;
       if (dma_scanline_count == dma_n_scanlines) {
         dma_writes++;
-
-        // dma_busy += bus.asyncDMAIsBusy() ? 1 : 0;
-        // bus.asyncDMAWriteBytes(
-        //     reinterpret_cast<uint8_t *>(dma_buf),
-        //     uint32_t(display_width * dma_n_scanlines * sizeof(uint16_t)));
+        dma_busy += bus.asyncDMAIsBusy() ? 1 : 0;
+        bus.asyncDMAWriteBytes(
+            reinterpret_cast<uint8_t *>(dma_buf),
+            uint32_t(display_width * dma_n_scanlines * sizeof(uint16_t)));
         // bus.writeBytes(
         //     reinterpret_cast<uint8_t *>(dma_buf),
         //     uint32_t(display_width * dma_n_scanlines * sizeof(uint16_t)));
-        lcd.pushPixels(dma_buf, uint32_t(display_width * dma_n_scanlines),
-                       DRAW_WITH_DMA);
         dma_scanline_count = 0;
         // swap to the other render buffer
         dma_buf = render_buf_ptr = dma_buf_use_first ? dma_buf_1 : dma_buf_2;
@@ -453,14 +432,12 @@ static void render(const int x, const int y) {
   constexpr int dma_n_scanlines_trailing = display_height % dma_n_scanlines;
   if (dma_n_scanlines_trailing) {
     dma_writes++;
-    // dma_busy += bus.asyncDMAIsBusy() ? 1 : 0;
-    // bus.asyncDMAWriteBytes(
-    //     reinterpret_cast<uint8_t *>(dma_buf),
-    //     uint32_t(display_width * dma_n_scanlines * sizeof(uint16_t)));
+    dma_busy += bus.asyncDMAIsBusy() ? 1 : 0;
+    bus.asyncDMAWriteBytes(
+        reinterpret_cast<uint8_t *>(dma_buf),
+        uint32_t(display_width * dma_n_scanlines * sizeof(uint16_t)));
     // bus.writeBytes(
     //     reinterpret_cast<uint8_t *>(dma_buf),
     //     uint32_t(display_width * dma_n_scanlines * sizeof(uint16_t)));
-    lcd.pushPixels(dma_buf, uint32_t(display_width * dma_n_scanlines),
-                   DRAW_WITH_DMA);
   }
 }
