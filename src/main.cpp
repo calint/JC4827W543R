@@ -137,7 +137,6 @@ void setup() {
   }
   pinMode(TFT_BL, OUTPUT);
   digitalWrite(TFT_BL, HIGH);
-  display.fillScreen(WHITE);
   display.startWrite();
 
   dma_buf_1 = static_cast<uint16_t *>(
