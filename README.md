@@ -1,7 +1,7 @@
 <video width="240" height="320" src="https://github.com/calint/JC4827W543R/assets/1920811/8b5c0ccf-73d2-4392-b81a-12377bdd7c0d"></video>
 
 # JC4827W543R
-a.k.a. cheap-black-device (CBD)
+a.k.a. cheap-chonky-display (CCD)
 
 next experiment after [ESP32-2432S028R](https://github.com/calint/bam)
 
@@ -10,6 +10,7 @@ next experiment after [ESP32-2432S028R](https://github.com/calint/bam)
 * [manufacturer](https://www.guition.com)
 * [documentation](https://github.com/lsdlsd88/JC4827W543)
 * [download](http://pan.jczn1688.com/s/zyojx8)
+* [community](https://discord.com/channels/630078152038809611/1199730744424153109)
 
 ### intention
 * developing using arduino framework with visual code and platformio
