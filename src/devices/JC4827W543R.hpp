@@ -1,5 +1,6 @@
 #pragma once
-// device implementation mostly from Arduino_GFX: Arduino_ESP32QSPI and Arduino_NV3041A
+// device implementation mostly from Arduino_GFX: Arduino_ESP32QSPI and
+// Arduino_NV3041A
 #include <driver/spi_master.h>
 
 #define NV3041A_MADCTL 0x36
@@ -19,7 +20,7 @@ class JC4827W543R {
   static constexpr int dma_max_transfer_b = 32768;
 
 public:
-  bool begin() {
+  void init() {
     // config chip select pin and set it high
     pinMode(TFT_CS, OUTPUT);
     bus_cs_high();
@@ -41,7 +42,7 @@ public:
     esp_err_t ret = spi_bus_initialize(SPI2_HOST, &bus_cfg, SPI_DMA_CH_AUTO);
     if (ret != ESP_OK) {
       ESP_ERROR_CHECK(ret);
-      return false;
+      assert(ret);
     }
 
     // setup graphics device
@@ -63,7 +64,7 @@ public:
     ret = spi_bus_add_device(SPI2_HOST, &dev_cfg, &device_handle_);
     if (ret != ESP_OK) {
       ESP_ERROR_CHECK(ret);
-      return false;
+      assert(ret);
     }
 
     // setup values that will not change
@@ -343,31 +344,11 @@ public:
     bus_write_c8(0x21);         // invertion off
     bus_write_c8d8(0x29, 0x00); // turn on display
 
-    return true;
-  }
+    set_rotation(display_orientation == TFT_ORIENTATION ? 0 : 1);
+    set_write_address_window(0, 0, display_width, display_height);
 
-  void set_rotation(uint8_t r) {
-    switch (r) {
-    case 1:
-      r = NV3041A_MADCTL_MY | NV3041A_MADCTL_MV | NV3041A_MADCTL_RGB;
-      break;
-    case 2:
-      r = NV3041A_MADCTL_RGB;
-      break;
-    case 3:
-      r = NV3041A_MADCTL_MX | NV3041A_MADCTL_MV | NV3041A_MADCTL_RGB;
-      break;
-    default: // case 0:
-      r = NV3041A_MADCTL_MX | NV3041A_MADCTL_MY | NV3041A_MADCTL_RGB;
-      break;
-    }
-    bus_write_c8d8(NV3041A_MADCTL, r);
-  }
-
-  void set_write_address_window(int16_t x, int16_t y, uint16_t w, uint16_t h) {
-    bus_write_c8d16d16(NV3041A_CASET, x, x + w - 1);
-    bus_write_c8d16d16(NV3041A_RASET, y, y + h - 1);
-    bus_write_c8(NV3041A_RAMWR); // write to RAM
+    pinMode(TFT_BL, OUTPUT);
+    digitalWrite(TFT_BL, HIGH);
   }
 
   bool asyncDMAIsBusy() {
@@ -453,6 +434,30 @@ private:
     transaction_.length = 32;
     assert(spi_device_polling_transmit(device_handle_, &transaction_) ==
            ESP_OK);
+  }
+
+  void set_rotation(uint8_t r) {
+    switch (r) {
+    case 1:
+      r = NV3041A_MADCTL_MY | NV3041A_MADCTL_MV | NV3041A_MADCTL_RGB;
+      break;
+    case 2:
+      r = NV3041A_MADCTL_RGB;
+      break;
+    case 3:
+      r = NV3041A_MADCTL_MX | NV3041A_MADCTL_MV | NV3041A_MADCTL_RGB;
+      break;
+    default: // case 0:
+      r = NV3041A_MADCTL_MX | NV3041A_MADCTL_MY | NV3041A_MADCTL_RGB;
+      break;
+    }
+    bus_write_c8d8(NV3041A_MADCTL, r);
+  }
+
+  void set_write_address_window(int16_t x, int16_t y, uint16_t w, uint16_t h) {
+    bus_write_c8d16d16(NV3041A_CASET, x, x + w - 1);
+    bus_write_c8d16d16(NV3041A_RASET, y, y + h - 1);
+    bus_write_c8(NV3041A_RAMWR); // write to RAM
   }
 
   spi_host_device_t host_device_{};

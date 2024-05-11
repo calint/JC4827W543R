@@ -127,15 +127,7 @@ void setup() {
   touch_screen.begin(hspi);
   touch_screen.setRotation(display_orientation ? 0 : 1);
 
-  // initiate display
-  pinMode(TFT_BL, OUTPUT);
-  digitalWrite(TFT_BL, HIGH);
-  if (!device.begin()) {
-    printf("!!! could not initiate Arduino_GFX\n");
-    exit(1);
-  }
-  device.set_rotation(display_orientation == TFT_ORIENTATION ? 0 : 1);
-  device.set_write_address_window(0, 0, display_width, display_height);
+  device.init();
 
   dma_buf_1 = static_cast<uint16_t *>(
       heap_caps_calloc(1, dma_buf_size_B, MALLOC_CAP_DMA));
