@@ -1,4 +1,5 @@
 #pragma once
+// device implementation mostly from Arduino_GFX: Arduino_ESP32QSPI and Arduino_NV3041A
 #include <driver/spi_master.h>
 
 #define NV3041A_MADCTL 0x36
