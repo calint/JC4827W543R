@@ -1,7 +1,14 @@
 #pragma once
-// device implementation mostly from Arduino_GFX
+// device implementation mostly from Arduino_GFX and XPT2046
 // code lifted from Arduino_ESP32QSPI and Arduino_NV3041A
+#include "../device.hpp"
+#include <SPI.h>
+#include <XPT2046_Touchscreen.h>
 #include <driver/spi_master.h>
+
+// setup touch screen
+static SPIClass hspi{HSPI}; // note. VSPI is used by the display
+static XPT2046_Touchscreen touch_screen{TOUCH_SCREEN_CS, TOUCH_SCREEN_IRQ};
 
 #define NV3041A_MADCTL 0x36
 #define NV3041A_COLMOD 0x3A
@@ -16,7 +23,7 @@
 #define NV3041A_RASET 0x2B
 #define NV3041A_RAMWR 0x2C
 
-class JC4827W543R {
+class JC4827W543R final : public device {
   // maximum for this device
   static constexpr int dma_max_transfer_b = 32768;
 
@@ -350,6 +357,23 @@ public:
 
     pinMode(TFT_BL, OUTPUT);
     digitalWrite(TFT_BL, HIGH);
+
+    // start the spi for the touch screen and init the library
+    hspi.begin(TOUCH_SCREEN_SCK, TOUCH_SCREEN_MISO, TOUCH_SCREEN_MOSI,
+               TOUCH_SCREEN_CS);
+    touch_screen.begin(hspi);
+    touch_screen.setRotation(display_orientation ? 0 : 1);
+  }
+
+  bool is_display_touched() {
+    return touch_screen.tirqTouched() && touch_screen.touched();
+  }
+
+  void get_display_touch(int16_t &x, int16_t &y, int16_t &z) {
+    const TS_Point pt = touch_screen.getPoint();
+    x = pt.x;
+    y = pt.y;
+    z = pt.z;
   }
 
   bool asyncDMAIsBusy() {

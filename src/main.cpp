@@ -49,15 +49,9 @@
 
 // platform specific definitions and objects
 #include "devices/JC4827W543R.hpp"
-#include <SPI.h>
-#include <XPT2046_Touchscreen.h>
 
 // setup device
 static JC4827W543R device{};
-
-// setup touch screen
-static SPIClass hspi{HSPI}; // note. VSPI is used by the display
-static XPT2046_Touchscreen touch_screen{XPT2046_CS, XPT2046_IRQ};
 
 // number of scanlines to render before DMA transfer
 static constexpr int dma_n_scanlines = 8;
@@ -121,11 +115,6 @@ void setup() {
   printf("          tile map: %zu B\n", sizeof(tile_map));
   printf("           sprites: %zu B\n", sizeof(sprites));
   printf("           objects: %zu B\n", sizeof(objects));
-
-  // start the spi for the touch screen and init the library
-  hspi.begin(XPT2046_SCK, XPT2046_MISO, XPT2046_MOSI, XPT2046_CS);
-  touch_screen.begin(hspi);
-  touch_screen.setRotation(display_orientation ? 0 : 1);
 
   device.init();
 
@@ -191,10 +180,13 @@ void loop() {
            sprites.allocated_list_len());
   }
 
-  if (touch_screen.tirqTouched() && touch_screen.touched()) {
-    const TS_Point pt = touch_screen.getPoint();
-    // ESP_LOGI("b", "x=%d  y=%d  z=%d", pt.x, pt.y, pt.z);
-    main_on_touch(pt.x, pt.y, pt.z);
+  if (device.is_display_touched()) {
+    int16_t x = 0;
+    int16_t y = 0;
+    int16_t z = 0;
+    device.get_display_touch(x, y, z);
+    // ESP_LOGI("b", "x=%d  y=%d  z=%d", x, y, z);
+    main_on_touch(x, y, z);
   }
 
   engine_loop();
