@@ -48,15 +48,12 @@
 #include "game/main.hpp"
 
 // platform specific definitions and objects
-#include <Arduino_GFX_Library.h>
+#include "devices/JC4827W543R.hpp"
 #include <SPI.h>
 #include <XPT2046_Touchscreen.h>
 
-// setup display
-static Arduino_ESP32QSPI bus{TFT_CS, TFT_SCK, TFT_D0, TFT_D1, TFT_D2, TFT_D3};
-static Arduino_NV3041A display{
-    &bus, GFX_NOT_DEFINED /* RST */, display_orientation ? 0 : 1, true /* IPS */
-};
+// setup device
+static JC4827W543R device{};
 
 // setup touch screen
 static SPIClass hspi{HSPI}; // note. VSPI is used by the display
@@ -131,13 +128,14 @@ void setup() {
   touch_screen.setRotation(display_orientation ? 0 : 1);
 
   // initiate display
-  if (!display.begin()) {
+  pinMode(TFT_BL, OUTPUT);
+  digitalWrite(TFT_BL, HIGH);
+  if (!device.begin()) {
     printf("!!! could not initiate Arduino_GFX\n");
     exit(1);
   }
-  pinMode(TFT_BL, OUTPUT);
-  digitalWrite(TFT_BL, HIGH);
-  display.startWrite();
+  device.set_rotation(display_orientation == TFT_ORIENTATION ? 0 : 1);
+  device.set_write_address_window(0, 0, display_width, display_height);
 
   dma_buf_1 = static_cast<uint16_t *>(
       heap_caps_calloc(1, dma_buf_size_B, MALLOC_CAP_DMA));
@@ -409,8 +407,8 @@ static void render(const int x, const int y) {
       dma_scanline_count++;
       if (dma_scanline_count == dma_n_scanlines) {
         dma_writes++;
-        dma_busy += bus.asyncDMAIsBusy() ? 1 : 0;
-        bus.asyncDMAWriteBytes(
+        dma_busy += device.asyncDMAIsBusy() ? 1 : 0;
+        device.asyncDMAWriteBytes(
             reinterpret_cast<uint8_t *>(dma_buf),
             uint32_t(display_width * dma_n_scanlines * sizeof(uint16_t)));
         // bus.writeBytes(
@@ -431,8 +429,8 @@ static void render(const int x, const int y) {
   constexpr int dma_n_scanlines_trailing = display_height % dma_n_scanlines;
   if (dma_n_scanlines_trailing) {
     dma_writes++;
-    dma_busy += bus.asyncDMAIsBusy() ? 1 : 0;
-    bus.asyncDMAWriteBytes(
+    dma_busy += device.asyncDMAIsBusy() ? 1 : 0;
+    device.asyncDMAWriteBytes(
         reinterpret_cast<uint8_t *>(dma_buf),
         uint32_t(display_width * dma_n_scanlines * sizeof(uint16_t)));
     // bus.writeBytes(
