@@ -1,6 +1,6 @@
 #pragma once
-// device implementation mostly from Arduino_GFX: Arduino_ESP32QSPI and
-// Arduino_NV3041A
+// device implementation mostly from Arduino_GFX
+// code lifted from Arduino_ESP32QSPI and Arduino_NV3041A
 #include <driver/spi_master.h>
 
 #define NV3041A_MADCTL 0x36
@@ -17,11 +17,12 @@
 #define NV3041A_RAMWR 0x2C
 
 class JC4827W543R {
+  // maximum for this device
   static constexpr int dma_max_transfer_b = 32768;
 
 public:
   void init() {
-    // config chip select pin and set it high
+    // config 'chip select' pin and disable it
     pinMode(TFT_CS, OUTPUT);
     bus_cs_high();
 
@@ -73,7 +74,7 @@ public:
     transaction_async_.flags = SPI_TRANS_MODE_QIO;
     transaction_async_.user = this;
 
-    // initiate display from Arduino_GFX
+    // magic numbers from from Arduino_NV3041A
     constexpr uint8_t init_commands[] = {
         0xff,
         0xa5,
@@ -389,12 +390,12 @@ public:
 
 private:
   static void pre_transaction_cb(spi_transaction_t *trans) {
-    JC4827W543R *dev = (JC4827W543R *)trans->user;
+    JC4827W543R *dev = static_cast<JC4827W543R *>(trans->user);
     dev->bus_cs_low();
   }
 
   static void post_transaction_cb(spi_transaction_t *trans) {
-    JC4827W543R *dev = (JC4827W543R *)trans->user;
+    JC4827W543R *dev = static_cast<JC4827W543R *>(trans->user);
     dev->bus_cs_high();
   }
 
@@ -426,7 +427,7 @@ private:
     transaction_.flags = SPI_TRANS_USE_TXDATA | SPI_TRANS_MULTILINE_CMD |
                          SPI_TRANS_MULTILINE_ADDR;
     transaction_.cmd = 0x02;
-    transaction_.addr = ((uint32_t)cmd) << 8;
+    transaction_.addr = static_cast<uint32_t>(cmd) << 8;
     transaction_.tx_data[0] = data1 >> 8;
     transaction_.tx_data[1] = data1;
     transaction_.tx_data[2] = data2 >> 8;
@@ -457,7 +458,7 @@ private:
   void set_write_address_window(int16_t x, int16_t y, uint16_t w, uint16_t h) {
     bus_write_c8d16d16(NV3041A_CASET, x, x + w - 1);
     bus_write_c8d16d16(NV3041A_RASET, y, y + h - 1);
-    bus_write_c8(NV3041A_RAMWR); // write to RAM
+    bus_write_c8(NV3041A_RAMWR);
   }
 
   spi_host_device_t host_device_{};
