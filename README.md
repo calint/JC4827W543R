@@ -31,5 +31,4 @@ next experiment after [ESP32-2432S028R](https://github.com/calint/bam)
   - tool-esptoolpy @ 1.40501.0 (4.5.1) 
   - toolchain-xtensa-esp32 @ 8.4.0+2021r2-patch5
 * dependencies:
-  - https://github.com/calint/Arduino_GFX
   - https://github.com/PaulStoffregen/XPT2046_Touchscreen#v1.4
