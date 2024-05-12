@@ -47,11 +47,16 @@
 // then the main entry file to user code
 #include "game/main.hpp"
 
-// platform specific definitions and objects
-#include "devices/JC4827W543R.hpp"
-
 // setup device
+#if defined(DEVICE_JC4827W543R)
+#include "devices/JC4827W543R.hpp"
 static JC4827W543R device{};
+#elif defined(DEVICE_ESP32_2432S28R)
+#include "devices/ESP32_2432S28R.hpp"
+static ESP32_2432S28R device{};
+#else
+#error "None of known devices defined: DEVICE_JC4827W543R, DEVICE_ESP32_2432S28R"
+#endif
 
 // number of scanlines to render before DMA transfer
 static constexpr int dma_n_scanlines = 8;
@@ -116,7 +121,7 @@ void setup() {
   printf("           sprites: %zu B\n", sizeof(sprites));
   printf("           objects: %zu B\n", sizeof(objects));
 
-  device.setup();
+  device.init();
 
   dma_buf_1 = static_cast<uint16_t *>(
       heap_caps_calloc(1, dma_buf_size_B, MALLOC_CAP_DMA));

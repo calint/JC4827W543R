@@ -1,9 +1,18 @@
 <video width="240" height="320" src="https://github.com/calint/JC4827W543R/assets/1920811/8b5c0ccf-73d2-4392-b81a-12377bdd7c0d"></video>
 
-# JC4827W543R
-a.k.a. cheap-chonky-display (CCD)
+# devices
+## ESP32-2432S028R
 
-next experiment after [ESP32-2432S028R](https://github.com/calint/bam)
+a.k.a. cheap-yellow-display (CYD)
+
+### about the device
+* [community](https://github.com/witnessmenow/ESP32-Cheap-Yellow-Display)
+* [purchased at](https://www.aliexpress.com/item/1005004502250619.html)
+* [manufacturer](http://www.jczn1688.com/)
+
+## JC4827W543R
+
+a.k.a. cheap-chonky-display (CCD)
 
 ### about the device
 * [purchased at](https://www.aliexpress.com/item/1005006729377800.html)
@@ -12,7 +21,7 @@ next experiment after [ESP32-2432S028R](https://github.com/calint/bam)
 * [download](http://pan.jczn1688.com/s/zyojx8)
 * [community](https://discord.com/channels/630078152038809611/1199730744424153109)
 
-### intention
+# intention
 * developing using arduino framework with visual code and platformio
 * exploring the device by developing a toy game
 * developing a platform-independent toy game engine featuring:
@@ -21,7 +30,7 @@ next experiment after [ESP32-2432S028R](https://github.com/calint/bam)
   - intuitive definition of game objects and logic
   - decent performance, ~40+/-5 frames per second on the device
 
-### development environment
+# development environment
 * Visual Code 1.89.0
 * PlatformIO 6.1.15
 * Espressif 32 (6.6.0) > Espressif ESP32 Dev Module
@@ -32,3 +41,4 @@ next experiment after [ESP32-2432S028R](https://github.com/calint/bam)
   - toolchain-xtensa-esp32 @ 8.4.0+2021r2-patch5
 * dependencies:
   - https://github.com/PaulStoffregen/XPT2046_Touchscreen#v1.4
+  - https://github.com/Bodmer/TFT_eSPI#V2.5.43

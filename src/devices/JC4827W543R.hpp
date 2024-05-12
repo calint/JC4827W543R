@@ -6,10 +6,6 @@
 #include <XPT2046_Touchscreen.h>
 #include <driver/spi_master.h>
 
-// setup touch screen
-static SPIClass hspi{HSPI}; // note. VSPI is used by the display
-static XPT2046_Touchscreen touch_screen{TOUCH_CS, TOUCH_IRQ};
-
 #define NV3041A_MADCTL 0x36
 #define NV3041A_COLMOD 0x3A
 
@@ -26,14 +22,17 @@ static XPT2046_Touchscreen touch_screen{TOUCH_CS, TOUCH_IRQ};
 class JC4827W543R final : public device {
   // maximum for this device
   static constexpr int dma_max_transfer_b = 32768;
+  // init touch screen
+  SPIClass hspi{HSPI}; // note. VSPI is used by the display
+  XPT2046_Touchscreen touch_screen{TOUCH_CS, TOUCH_IRQ};
 
 public:
-  void setup() {
+  void init() override {
     // config 'chip select' pin and disable it
     pinMode(TFT_CS, OUTPUT);
     bus_chip_select_disable();
 
-    // setup bus
+    // init bus
     const spi_bus_config_t bus_cfg = {.data0_io_num = TFT_D0,
                                       .data1_io_num = TFT_D1,
                                       .sclk_io_num = TFT_SCK,
@@ -53,7 +52,7 @@ public:
       assert(ret);
     }
 
-    // setup graphics device
+    // init graphics device
     const spi_device_interface_config_t dev_cfg = {
         .command_bits = 8,
         .address_bits = 24,
@@ -75,7 +74,7 @@ public:
       assert(ret);
     }
 
-    // setup values that will not change
+    // init values that will not change
     transaction_async_.cmd = 0x32;
     transaction_async_.addr = 0x003C00;
     transaction_async_.flags = SPI_TRANS_MODE_QIO;
@@ -364,18 +363,18 @@ public:
     touch_screen.setRotation(display_orientation ? 0 : 1);
   }
 
-  bool is_display_touched() {
+  bool is_display_touched() override {
     return touch_screen.tirqTouched() && touch_screen.touched();
   }
 
-  void get_display_touch(int16_t &x, int16_t &y, int16_t &z) {
+  void get_display_touch(int16_t &x, int16_t &y, int16_t &z) override {
     const TS_Point pt = touch_screen.getPoint();
     x = pt.x;
     y = pt.y;
     z = pt.z;
   }
 
-  bool asyncDMAIsBusy() {
+  bool asyncDMAIsBusy() override {
     if (!async_busy_) {
       return false;
     }
@@ -387,7 +386,7 @@ public:
     return async_busy_;
   }
 
-  void asyncDMAWaitForCompletion() {
+  void asyncDMAWaitForCompletion() override {
     if (!async_busy_) {
       return;
     }
@@ -399,7 +398,7 @@ public:
     async_busy_ = false;
   }
 
-  void asyncDMAWriteBytes(uint8_t *data, uint32_t len) {
+  void asyncDMAWriteBytes(uint8_t *data, uint32_t len) override {
     asyncDMAWaitForCompletion();
 
     transaction_async_.tx_buffer = data;
