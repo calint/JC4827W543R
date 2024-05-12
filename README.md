@@ -6,7 +6,7 @@
   - sprites in layers with pixel precision on-screen collision detection
   - intuitive definition of game objects and logic
 
-## ESP32-2432S028R
+## device ESP32-2432S028R
 
 a.k.a. cheap-yellow-display (CYD)
 
@@ -15,7 +15,7 @@ a.k.a. cheap-yellow-display (CYD)
 * [purchased at](https://www.aliexpress.com/item/1005004502250619.html)
 * [community](https://github.com/witnessmenow/ESP32-Cheap-Yellow-Display)
 
-## JC4827W543R
+## device JC4827W543R
 
 a.k.a. cheap-chonky-display (CCD)
 
