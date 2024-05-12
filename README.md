@@ -10,7 +10,8 @@
 
 a.k.a. cheap-yellow-display (CYD)
 
-~30 frames per second on the device
+* display: 240 x 320
+* performance: ~30 frames per second
 
 * [purchased at](https://www.aliexpress.com/item/1005004502250619.html)
 * [community](https://github.com/witnessmenow/ESP32-Cheap-Yellow-Display)
@@ -19,7 +20,8 @@ a.k.a. cheap-yellow-display (CYD)
 
 a.k.a. cheap-chonky-display (CCD)
 
-~40 frames per second on the device
+* display: 272 x 480
+* performance: ~40 frames per second
 
 <video width="240" height="320" src="https://github.com/calint/JC4827W543R/assets/1920811/8b5c0ccf-73d2-4392-b81a-12377bdd7c0d"></video>
 
