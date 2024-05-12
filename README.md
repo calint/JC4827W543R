@@ -1,5 +1,3 @@
-<video width="240" height="320" src="https://github.com/calint/JC4827W543R/assets/1920811/8b5c0ccf-73d2-4392-b81a-12377bdd7c0d"></video>
-
 # devices
 ## ESP32-2432S028R
 
@@ -13,6 +11,8 @@ a.k.a. cheap-yellow-display (CYD)
 ## JC4827W543R
 
 a.k.a. cheap-chonky-display (CCD)
+
+<video width="240" height="320" src="https://github.com/calint/JC4827W543R/assets/1920811/8b5c0ccf-73d2-4392-b81a-12377bdd7c0d"></video>
 
 ### about the device
 * [purchased at](https://www.aliexpress.com/item/1005006729377800.html)
