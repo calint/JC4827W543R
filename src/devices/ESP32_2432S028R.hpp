@@ -5,7 +5,7 @@
 #include <TFT_eSPI.h>
 #include <XPT2046_Touchscreen.h>
 
-class ESP32_2432S28R final : public device {
+class ESP32_2432S028R final : public device {
   TFT_eSPI display{};
   // init touch screen
   SPIClass hspi{HSPI}; // note. VSPI is used by the display
