@@ -348,7 +348,7 @@ public:
 
     delay(200);
 
-    bus_write_c8(0x21);         // invertion off
+    bus_write_c8(0x21);         // inversion off
     bus_write_c8d8(0x29, 0x00); // turn on display
 
     set_rotation(display_orientation == TFT_ORIENTATION ? 0 : 1);
