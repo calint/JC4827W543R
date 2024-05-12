@@ -55,13 +55,17 @@ static JC4827W543R device{};
 #include "devices/ESP32_2432S028R.hpp"
 static ESP32_2432S028R device{};
 #else
-#error "None of known devices defined: DEVICE_JC4827W543R, DEVICE_ESP32_2432S028R"
+#error                                                                         \
+    "None of known devices defined: DEVICE_JC4827W543R, DEVICE_ESP32_2432S028R"
 #endif
 
 // number of scanlines to render before DMA transfer
 static constexpr int dma_n_scanlines = 8;
 // note. performance on device: max 60 (32640 B buffer) (max on device 32768 B)
-//  1: 26 fps, 2: 32 fps, 4: 35 fps, 8: 37 fps, 16: 38 fps, 32: 39 fps 60: 40
+//  ESP32-2432S028R:
+//    1: 25 fps, 2: 28 fps, 4: 29 fps, 8: 31 fps, 16: 31 fps, 32: 31 fps
+//  JC4827W543R:
+//    1: 26 fps, 2: 32 fps, 4: 35 fps, 8: 37 fps, 16: 38 fps, 32: 39 fps
 
 // alternating buffers for rendering scanlines while DMA is active
 // allocated in 'setup()'
