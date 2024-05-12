@@ -1,3 +1,11 @@
+## intention
+* developing using arduino framework with visual code and platformio
+* exploring the devices by developing a toy game
+* developing a platform-independent toy game engine featuring:
+  - smooth scrolling tile map
+  - sprites in layers with pixel precision on-screen collision detection
+  - intuitive definition of game objects and logic
+
 ## ESP32-2432S028R
 
 a.k.a. cheap-yellow-display (CYD)
@@ -20,14 +28,6 @@ a.k.a. cheap-chonky-display (CCD)
 * [documentation](https://github.com/lsdlsd88/JC4827W543)
 * [download](http://pan.jczn1688.com/s/zyojx8)
 * [community](https://discord.com/channels/630078152038809611/1199730744424153109)
-
-## intention
-* developing using arduino framework with visual code and platformio
-* exploring the device by developing a toy game
-* developing a platform-independent toy game engine featuring:
-  - smooth scrolling tile map
-  - sprites in layers with pixel precision on-screen collision detection
-  - intuitive definition of game objects and logic
 
 ## development environment
 * Visual Code 1.89.0
