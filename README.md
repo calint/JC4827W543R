@@ -5,7 +5,6 @@ a.k.a. cheap-yellow-display (CYD)
 performance, ~30 frames per second on the device
 
 * [purchased at](https://www.aliexpress.com/item/1005004502250619.html)
-* [manufacturer](http://www.jczn1688.com/)
 * [community](https://github.com/witnessmenow/ESP32-Cheap-Yellow-Display)
 
 ## JC4827W543R
