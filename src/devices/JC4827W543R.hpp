@@ -8,7 +8,7 @@
 
 // setup touch screen
 static SPIClass hspi{HSPI}; // note. VSPI is used by the display
-static XPT2046_Touchscreen touch_screen{TOUCH_SCREEN_CS, TOUCH_SCREEN_IRQ};
+static XPT2046_Touchscreen touch_screen{TOUCH_CS, TOUCH_IRQ};
 
 #define NV3041A_MADCTL 0x36
 #define NV3041A_COLMOD 0x3A
@@ -359,8 +359,7 @@ public:
     digitalWrite(TFT_BL, HIGH);
 
     // start the spi for the touch screen and init the library
-    hspi.begin(TOUCH_SCREEN_SCK, TOUCH_SCREEN_MISO, TOUCH_SCREEN_MOSI,
-               TOUCH_SCREEN_CS);
+    hspi.begin(TOUCH_SCK, TOUCH_MISO, TOUCH_MOSI, TOUCH_CS);
     touch_screen.begin(hspi);
     touch_screen.setRotation(display_orientation ? 0 : 1);
   }
