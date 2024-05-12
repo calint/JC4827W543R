@@ -1,9 +1,7 @@
-# devices
 ## ESP32-2432S028R
 
 a.k.a. cheap-yellow-display (CYD)
 
-### about the device
 * [community](https://github.com/witnessmenow/ESP32-Cheap-Yellow-Display)
 * [purchased at](https://www.aliexpress.com/item/1005004502250619.html)
 * [manufacturer](http://www.jczn1688.com/)
@@ -14,14 +12,13 @@ a.k.a. cheap-chonky-display (CCD)
 
 <video width="240" height="320" src="https://github.com/calint/JC4827W543R/assets/1920811/8b5c0ccf-73d2-4392-b81a-12377bdd7c0d"></video>
 
-### about the device
 * [purchased at](https://www.aliexpress.com/item/1005006729377800.html)
 * [manufacturer](https://www.guition.com)
 * [documentation](https://github.com/lsdlsd88/JC4827W543)
 * [download](http://pan.jczn1688.com/s/zyojx8)
 * [community](https://discord.com/channels/630078152038809611/1199730744424153109)
 
-# intention
+## intention
 * developing using arduino framework with visual code and platformio
 * exploring the device by developing a toy game
 * developing a platform-independent toy game engine featuring:
@@ -30,7 +27,7 @@ a.k.a. cheap-chonky-display (CCD)
   - intuitive definition of game objects and logic
   - decent performance, ~40+/-5 frames per second on the device
 
-# development environment
+## development environment
 * Visual Code 1.89.0
 * PlatformIO 6.1.15
 * Espressif 32 (6.6.0) > Espressif ESP32 Dev Module
