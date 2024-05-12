@@ -23,8 +23,6 @@ a.k.a. cheap-chonky-display (CCD)
 * display: 272 x 480
 * performance: ~40 frames per second
 
-<video width="240" height="320" src="https://github.com/calint/JC4827W543R/assets/1920811/8b5c0ccf-73d2-4392-b81a-12377bdd7c0d"></video>
-
 * [purchased at](https://www.aliexpress.com/item/1005006729377800.html)
 * [manufacturer](https://www.guition.com)
 * [documentation](https://github.com/lsdlsd88/JC4827W543)
@@ -43,3 +41,7 @@ a.k.a. cheap-chonky-display (CCD)
 * dependencies:
   - https://github.com/PaulStoffregen/XPT2046_Touchscreen#v1.4
   - https://github.com/Bodmer/TFT_eSPI#V2.5.43
+
+## videos
+
+<video width="240" height="320" src="https://github.com/calint/JC4827W543R/assets/1920811/8b5c0ccf-73d2-4392-b81a-12377bdd7c0d"></video>
