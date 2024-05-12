@@ -17,7 +17,7 @@
 #include "objects/utils.hpp"
 
 // callback from 'setup()'
-static void main_setup() {
+static void main_init() {
   // output size of game object classes
   printf("------------------- game object sizes --------------------\n");
   printf("       game_object: %zu B\n", sizeof(game_object));

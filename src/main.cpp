@@ -136,11 +136,11 @@ void setup() {
 
   // initiate clock
   clk.init(millis(), clk_fps_update_ms, clk_locked_dt_ms);
-  // note. not in 'engine_setup()' due to dependency on 'millis()'
+  // note. not in 'engine_init()' due to dependency on 'millis()'
 
-  engine_setup();
+  engine_init();
 
-  main_setup();
+  main_init();
 
   printf("------------------- on heap ------------------------------\n");
   printf("   DMA buf 1 and 2: %d B\n", 2 * dma_buf_size_B);

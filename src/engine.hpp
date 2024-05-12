@@ -182,7 +182,7 @@ public:
 } static clk{};
 
 // callback from 'main.cpp'
-static void engine_setup() {
+static void engine_init() {
   // set random seed for deterministic behavior
   srand(random_seed);
 }
