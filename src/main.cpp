@@ -31,8 +31,6 @@
 // reviewed: 2024-05-01
 
 #include <Arduino.h>
-
-// esp32 related
 #include "hal/efuse_hal.h"
 
 // first game defines
