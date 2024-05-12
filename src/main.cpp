@@ -116,7 +116,7 @@ void setup() {
   printf("           sprites: %zu B\n", sizeof(sprites));
   printf("           objects: %zu B\n", sizeof(objects));
 
-  device.init();
+  device.setup();
 
   dma_buf_1 = static_cast<uint16_t *>(
       heap_caps_calloc(1, dma_buf_size_B, MALLOC_CAP_DMA));

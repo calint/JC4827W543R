@@ -28,7 +28,7 @@ class JC4827W543R final : public device {
   static constexpr int dma_max_transfer_b = 32768;
 
 public:
-  void init() {
+  void setup() {
     // config 'chip select' pin and disable it
     pinMode(TFT_CS, OUTPUT);
     bus_cs_high();
