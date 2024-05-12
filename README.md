@@ -2,6 +2,8 @@
 
 a.k.a. cheap-yellow-display (CYD)
 
+performance, ~30 frames per second on the device
+
 * [community](https://github.com/witnessmenow/ESP32-Cheap-Yellow-Display)
 * [purchased at](https://www.aliexpress.com/item/1005004502250619.html)
 * [manufacturer](http://www.jczn1688.com/)
@@ -9,6 +11,8 @@ a.k.a. cheap-yellow-display (CYD)
 ## JC4827W543R
 
 a.k.a. cheap-chonky-display (CCD)
+
+performance, ~40 frames per second on the device
 
 <video width="240" height="320" src="https://github.com/calint/JC4827W543R/assets/1920811/8b5c0ccf-73d2-4392-b81a-12377bdd7c0d"></video>
 
@@ -25,7 +29,6 @@ a.k.a. cheap-chonky-display (CCD)
   - smooth scrolling tile map
   - sprites in layers with pixel precision on-screen collision detection
   - intuitive definition of game objects and logic
-  - decent performance, ~40+/-5 frames per second on the device
 
 ## development environment
 * Visual Code 1.89.0
