@@ -31,7 +31,7 @@ public:
   void setup() {
     // config 'chip select' pin and disable it
     pinMode(TFT_CS, OUTPUT);
-    bus_cs_high();
+    bus_chip_select_disable();
 
     // setup bus
     const spi_bus_config_t bus_cfg = {.data0_io_num = TFT_D0,
@@ -415,16 +415,16 @@ public:
 private:
   static void pre_transaction_cb(spi_transaction_t *trans) {
     JC4827W543R *dev = static_cast<JC4827W543R *>(trans->user);
-    dev->bus_cs_low();
+    dev->bus_chip_select_enable();
   }
 
   static void post_transaction_cb(spi_transaction_t *trans) {
     JC4827W543R *dev = static_cast<JC4827W543R *>(trans->user);
-    dev->bus_cs_high();
+    dev->bus_chip_select_disable();
   }
 
-  void bus_cs_low() { digitalWrite(TFT_CS, LOW); }
-  void bus_cs_high() { digitalWrite(TFT_CS, HIGH); }
+  void bus_chip_select_enable() { digitalWrite(TFT_CS, LOW); }
+  void bus_chip_select_disable() { digitalWrite(TFT_CS, HIGH); }
 
   void bus_write_c8(uint8_t cmd) {
     transaction_.flags = SPI_TRANS_MULTILINE_CMD | SPI_TRANS_MULTILINE_ADDR;
